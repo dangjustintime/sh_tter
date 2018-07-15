@@ -11,7 +11,9 @@ const userSchema = Schema({
     following: [String],
     followers: [String],
     photos: [String],
-    likes: [String]
+    likes: [String],
+    shits: [String]
+
 });
 
 const User = mongoose.model("User", userSchema);

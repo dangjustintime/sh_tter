@@ -1,3 +1,8 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  # user routes
+  get 'user/index', to: 'user#index'
+  get 'user/:id', to: 'user#show'
+  post 'user', to: 'user#create'
+  delete 'user/:id', to: 'user#delete'
+  put 'user/:id', to: 'user#update'
 end

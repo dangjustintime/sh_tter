@@ -21,6 +21,7 @@ class Shit
     }
   end
   def self.create(opts)
+    currentTime = Time.now
     results = DB.exec(
       <<-SQL
         INSERT INTO shits (
@@ -30,7 +31,7 @@ class Shit
         VALUES (
           '#{opts["text"]}',
           #{opts["user_id"]},
-          '#{opts["created_at"]}')
+          '#{currentTime}')
         RETURNING id, text, user_id, created_at
       SQL
     )

@@ -1,0 +1,20 @@
+/*
+  colors
+  brown: #7a4d16
+  tan: #c69860
+  dark brown: #472d0d
+ */
+
+.brown {
+  background-color: #7a4d16;
+  color: white;
+}
+
+#homeInfo {
+  background-color: #7a4d16;
+  color: white;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+}

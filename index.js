@@ -20,6 +20,8 @@ const userController = require('./controllers/userController.js');
 app.use('/users', userController);
 const sessionController = require('./controllers/sessionController.js');
 app.use('/sessions', sessionController);
+const shitController = require('./controllers/shitController.js');
+app.use('/shits', shitController);
 
 // listening to port
 app.listen(PORT, () => {

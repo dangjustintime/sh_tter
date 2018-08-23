@@ -11,7 +11,7 @@ router.get("/", (request, response) => {
 });
 
 // show route
-router.get("/id", (request, response) => {
+router.get("/:id", (request, response) => {
   User.findById(request.params.id, (error, foundUser) => {
     response.json(foundUser);
   });

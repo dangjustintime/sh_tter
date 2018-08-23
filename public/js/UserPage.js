@@ -20,6 +20,7 @@ class UserPage extends React.Component {
           <input type="text" placeholder="sh*t" id="text"/>
           <input type="submit" value="sh*t" />
         </form>
+        <ShitList shits={this.props.shits}/>
       </div>
     )
   }

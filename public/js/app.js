@@ -7,23 +7,23 @@ class App extends React.Component {
         password: "",
         id: ""
       },
-      text: ""
+      text: "",
+      shits: []
     };
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleCreateShit = this.handleCreateShit.bind(this); 
-  }
-  componentDidMount() {
+    this.getShits = this.getShits.bind(this);
   }
   handleLogin(newSession) {
-    console.log("handleLogin");
     this.setState({ session: {
       username: newSession.username,
       password: newSession.password,
       id: newSession._id
     }});
+    this.getShits();
   }
   handleLoginSubmit(newSession) {
     fetch('/sessions', {
@@ -36,15 +36,12 @@ class App extends React.Component {
       }
     })
     .then(response => {
-      console.log("response: ",response);
       return response.json();
     })
     .then(jsonedSession => {
-      console.log("json: ",jsonedSession);
       if (!jsonedSession.status) {
         this.handleLogin(jsonedSession);
       }
-      console.log("id =", this.state.session.id); 
     })
     .catch(error => console.log(error));
     event.preventDefault();
@@ -58,7 +55,6 @@ class App extends React.Component {
       }
     })
     .then(response => {
-      console.log(response);
       this.setState({
         session: {
           username: "",
@@ -72,7 +68,6 @@ class App extends React.Component {
     .catch(error => console.log(error));
   }
   handleSignUp(newUser) {
-    console.log("handleSignUp");
     fetch('/users', {
       method: "POST",
       body: JSON.stringify(newUser),
@@ -81,7 +76,6 @@ class App extends React.Component {
       }
     }) 
     .then(response => {
-      console.log(response);
       return response.json();
     })
     .then(jsonedSession => {
@@ -92,7 +86,6 @@ class App extends React.Component {
   }
   handleCreateShit(event) {
     console.log("create shit");
-    
     fetch('/shits', {
       method: "Post",
       body: JSON.stringify(this.state.session),
@@ -104,9 +97,23 @@ class App extends React.Component {
       return response.json();
     })
     .then(jsonedSession => {
+      console.log(jsonedSession); 
     })
     .catch(error => console.log(error));
     event.preventDefault();
+  }
+  getShits() {
+    console.log("get shits"); 
+    fetch('/shits/index/' + this.state.session.username)
+    .then(response => {
+      console.log(response);
+      return response.json();
+    })
+    .then(jsonedData => {
+      this.setState({ shits: jsonedData });
+      console.log("json data:", jsonedData);
+    })
+    .catch(error => console.log(error));
   }
   render() {
     return (
@@ -123,6 +130,8 @@ class App extends React.Component {
             session={this.state.session}
             handleSignOut={this.handleSignOut}
             handleCreateShit={this.handleCreateShit}
+            getShits={this.getShits}
+            shits={this.state.shits}
           />
         }
         <h1>{this.state.username}</h1>

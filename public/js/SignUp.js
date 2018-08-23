@@ -16,7 +16,7 @@ class SignUp extends React.Component {
     this.setState({ password: event.target.value });
   }
   handleSubmit(event) {
-    this.props.handleSignUp(this.state)
+    this.props.handleSignUp(this.state);
   }
   render() {
     return (

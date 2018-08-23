@@ -3,61 +3,91 @@ class App extends React.Component {
     super(props);
     this.state = {
       session: {
-        username: "dangjustintime",
-        password: ""
+        username: "",
+        password: "",
+        id: ""
       },
       text: ""
     };
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
+    this.handleSignOut = this.handleSignOut.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleCreateShit = this.handleCreateShit.bind(this); 
   }
+  componentDidMount() {
+  }
   handleLogin(newSession) {
-    console.log("handleLogin")
+    console.log("handleLogin");
     this.setState({ session: {
       username: newSession.username,
-      password: newSession.password
+      password: newSession.password,
+      id: newSession._id
     }});
   }
-  handleLoginSubmit(event) {
+  handleLoginSubmit(newSession) {
     fetch('/sessions', {
       method: "POST",
-      body: JSON.stringify(this.state.session),
-      credentials: "same-origin",
+      body: JSON.stringify(newSession),
+      credentials: "include",
       headers: {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => {
+      console.log("response: ",response);
+      return response.json();
+    })
+    .then(jsonedSession => {
+      console.log("json: ",jsonedSession);
+      if (!jsonedSession.status) {
+        this.handleLogin(jsonedSession);
+      }
+      console.log("id =", this.state.session.id); 
+    })
+    .catch(error => console.log(error));
+    event.preventDefault();
+  }
+  handleSignOut(event) {
+    fetch("/sessions", {
+      method: "DELETE",
+      headers: {
+        "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json"
       }
     })
     .then(response => {
       console.log(response);
+      this.setState({
+        session: {
+          username: "",
+          password: "",
+          id: ""
+        },
+        text: ""
+      })
       return response.json();
     })
-    .then(jsonedSession => {
-      console.log(jsonedSession);
-      this.handleLogin(jsonedSession);
-    })
     .catch(error => console.log(error));
-    event.preventDefault();
   }
-  handleSignUp(event) {
+  handleSignUp(newUser) {
     console.log("handleSignUp");
-    /*
     fetch('/users', {
       method: "POST",
-      body: JSON.stringify(this.state.session);
+      body: JSON.stringify(newUser),
       headers: {
         "Content-Type": "application/json"
       }
     }) 
     .then(response => {
+      console.log(response);
       return response.json();
     })
     .then(jsonedSession => {
       this.handleLogin(jsonedSession);
     })
     .catch(error => console.log(error));
-    */
     event.preventDefault();
   }
   handleCreateShit(event) {
@@ -92,7 +122,8 @@ class App extends React.Component {
             handleSignUp={this.handleSignUp}
           /> : 
           <UserPage
-            username={this.state.session.username}
+            session={this.state.session}
+            handleSignOut={this.handleSignOut}
             handleCreateShit={this.handleCreateShit}
           />
         }

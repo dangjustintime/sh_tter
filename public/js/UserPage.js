@@ -13,8 +13,8 @@ class UserPage extends React.Component {
   render() {
     return (
       <div>
-        <h1>Welcome {this.state.username}!!</h1>
-        <button>Sign Out</button>
+        <h1>Welcome {(this.props.session.id)}!!</h1>
+        <button onClick={this.props.handleSignOut}>Sign Out</button>
         <form onSubmit={this.props.handleCreateShit}>
           Create Shi*t
           <input type="text" placeholder="sh*t" id="text"/>

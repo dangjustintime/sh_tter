@@ -15,13 +15,11 @@ app.use(session({
     saveUninitialized: false
 }));
 
-/*
 // controllers
-const userController = require('./controllers/users.js');
+const userController = require('./controllers/userController.js');
 app.use('/users', userController);
-const sessionController = require('./controllers/sessions.js');
+const sessionController = require('./controllers/sessionController.js');
 app.use('/sessions', sessionController);
-*/
 
 // listening to port
 app.listen(PORT, () => {
@@ -29,7 +27,7 @@ app.listen(PORT, () => {
 });
 
 // connectiong to mongodb
-mongoose.connect(mongoUri);
+mongoose.connect(mongoUri, { useNewUrlParser: true });
 mongoose.connection.once('open', () => {
     console.log('connected to mongoose');
 });

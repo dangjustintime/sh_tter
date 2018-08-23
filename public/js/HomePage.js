@@ -5,10 +5,7 @@ class HomePage extends React.Component {
       username: this.props.username,
       password: this.props.password
     }
-    this.handleSubmit = this.props.handleSubmit;
   }
-  this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
-  this.handleLogin = this.handleLogin.bind(this);
   render() {
     return (
       <div>
@@ -21,11 +18,13 @@ class HomePage extends React.Component {
           </div> 
           <div className="col-6 container">
             <h1>💩</h1>
-            <form onSubmit={this.handleSubmit} >
-              <input type="text" placeholder="username" value={this.state.username}/>
-              <input type="password" placeholder="password" value={this.state.password}/>
-              <input type="submit" value="Log in" />
-            </form>
+            <LoginForm
+              handleLogin={this.props.handleLogin}
+              handleLoginSubmit={this.props.handleLoginSubmit}
+            />
+            <SignUp
+              handleSignUp={this.props.handleSignUp}
+            />
           </div> 
         </div> 
       </div> 

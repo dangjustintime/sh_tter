@@ -16,6 +16,7 @@ class App extends React.Component {
     this.handleCreateShit = this.handleCreateShit.bind(this); 
     this.handleDeleteShit = this.handleDeleteShit.bind(this); 
     this.getShits = this.getShits.bind(this);
+    this.getFollowingShits = this.getFollowingShits.bind(this);
   }
   handleLogin(newSession) {
     this.setState({ session: {
@@ -24,6 +25,7 @@ class App extends React.Component {
       id: newSession._id
     }});
     this.getShits();
+    this.getFollowingShits();
   }
   handleLoginSubmit(newSession) {
     fetch('/sessions', {
@@ -117,17 +119,36 @@ class App extends React.Component {
     getShits();
   }
   getShits() {
-    console.log("get shits"); 
     fetch('/shits/index/' + this.state.session.username)
     .then(response => {
-      console.log(response);
       return response.json();
     })
     .then(jsonedData => {
       this.setState({ shits: jsonedData });
-      console.log("json data:", jsonedData);
     })
     .catch(error => console.log(error));
+  }
+  getFollowingShits() {
+    console.log("getting following shits");
+    const followingAccounts = [];
+    const followingShits = [];
+    fetch("/users/" + this.state.session.id)
+    .then(response => {
+      console.log("user response: ", response);
+      return response.json();
+    })
+    .then(jsonedData => {
+      jsonedData.following.forEach((account) => {
+        console.log("account:", account); 
+        fetch("/shits/index/" + account)
+        .then(response => response.json())
+        .then(jsonedShit => {
+          jsonedShit.forEach((shit) => followingShits.push(shit));
+          console.log(followingShits);
+          this.setState({ shits: followingShits.concat(this.state.shits) });
+        });
+      });
+    })
   }
   render() {
     return (

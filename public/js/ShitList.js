@@ -3,7 +3,12 @@ class ShitList extends React.Component {
     return(
       <div>
         {this.props.shits.map((shit) => {
-          return(<ShitItem shit={shit} />);
+          return(
+            <ShitItem
+              shit={shit}
+              handleDeleteShit={this.props.handleDeleteShit}
+            />
+          );
         })}
       </div>
     )

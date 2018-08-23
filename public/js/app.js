@@ -7,7 +7,6 @@ class App extends React.Component {
         password: "",
         id: ""
       },
-      text: "",
       shits: []
     };
     this.handleLogin = this.handleLogin.bind(this);
@@ -15,6 +14,7 @@ class App extends React.Component {
     this.handleSignOut = this.handleSignOut.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleCreateShit = this.handleCreateShit.bind(this); 
+    this.handleDeleteShit = this.handleDeleteShit.bind(this); 
     this.getShits = this.getShits.bind(this);
   }
   handleLogin(newSession) {
@@ -84,11 +84,17 @@ class App extends React.Component {
     .catch(error => console.log(error));
     event.preventDefault();
   }
-  handleCreateShit(event) {
-    console.log("create shit");
+  handleCreateShit(text) {
+    const newShit = {
+      text: text,
+      author: this.state.session.username,
+      timestamp: Date(Date.now()),
+      likes: [],
+      reshits: []
+    };
     fetch('/shits', {
       method: "Post",
-      body: JSON.stringify(this.state.session),
+      body: JSON.stringify(newShit),
       headers: {
         "Content-Type": "application/json"
       }
@@ -101,6 +107,14 @@ class App extends React.Component {
     })
     .catch(error => console.log(error));
     event.preventDefault();
+    getShits();
+  }
+  handleDeleteShit(id) {
+    console.log("delete shit");
+    fetch("/shits/" + id, {
+      method: "DELETE"
+    })
+    getShits();
   }
   getShits() {
     console.log("get shits"); 
@@ -130,6 +144,7 @@ class App extends React.Component {
             session={this.state.session}
             handleSignOut={this.handleSignOut}
             handleCreateShit={this.handleCreateShit}
+            handleDeleteShit={this.handleDeleteShit}
             getShits={this.getShits}
             shits={this.state.shits}
           />

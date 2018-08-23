@@ -92,7 +92,7 @@ class App extends React.Component {
   }
   handleCreateShit(event) {
     console.log("create shit");
-    /*
+    
     fetch('/shits', {
       method: "Post",
       body: JSON.stringify(this.state.session),
@@ -104,11 +104,9 @@ class App extends React.Component {
       return response.json();
     })
     .then(jsonedSession => {
-      this.handleLogin(jsonedSession);
     })
     .catch(error => console.log(error));
     event.preventDefault();
-    */
   }
   render() {
     return (

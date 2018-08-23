@@ -11,6 +11,7 @@ router.get("/index/:author", (request, response) => {
   });
 });
 
+
 // add like route
 router.put("/addLike/:id", (request, response) => {
   Shit.findByIdAndUpdate(request.params.id, { $push: { likes: request.body.liker } }, (error, foundShit) => {
@@ -36,6 +37,16 @@ router.get("/:id", (request, response) => {
   Shit.findById(request.params.id, (error, foundShit) => {
     response.json(foundShit);
   });
+});
+
+// post route
+router.post("/", (request, response) => {
+  request.body.likes = [];
+  request.body.reshits = [];
+  request.body.timestamp = Date(Date.now());
+  Shit.create(request.body, (error, newUser) => {
+    response.json(newUser);
+  })
 });
 
 // delete route

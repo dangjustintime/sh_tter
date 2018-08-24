@@ -12,6 +12,7 @@ class App extends React.Component {
     };
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
+    this.handleEditSubmit = this.handleEditSubmit.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleCreateShit = this.handleCreateShit.bind(this); 
@@ -53,6 +54,29 @@ class App extends React.Component {
       }
     })
     .catch(error => console.log(error));
+    event.preventDefault();
+  }
+  handleEditSubmit(bio, profilePic) {
+    const editedUser = {
+      bio: bio,
+      profilePic: profilePic
+    }
+    console.log("handleEditSubmit");
+    fetch("/users/edit/"+ this.state.session.id, {
+      method: "PUT",
+      body: JSON.stringify(editedUser),
+      headers: {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json"
+      }
+    }) 
+    .then(response => {
+      return response.json();
+    })
+    .then(JSONData => {
+      console.log(JSONData);
+    })
+    .catch(error => console.log("error"));
     event.preventDefault();
   }
   handleSignOut(event) {
@@ -199,6 +223,10 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <div>
+          <h1>Sh*tter💩</h1>
+          <h1>{this.state.session.password}</h1>
+        </div>
         { this.state.session.username == "" ?
           <HomePage
             username={this.state.session.username} 
@@ -212,12 +240,12 @@ class App extends React.Component {
             handleSignOut={this.handleSignOut}
             handleCreateShit={this.handleCreateShit}
             handleDeleteShit={this.handleDeleteShit}
+            handleEditSubmit={this.handleEditSubmit}
             handleAddFollower={this.handleAddFollower}
             handleAddFollowing={this.handleAddFollowing}
             getShits={this.getShits}
             shits={this.state.shits}
             users={this.state.users}
-
           />
         }
         <h1>{this.state.username}</h1>

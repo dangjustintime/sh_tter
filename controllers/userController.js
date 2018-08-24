@@ -12,7 +12,6 @@ router.get("/", (request, response) => {
 
 // edit route
 router.put("/edit/:id", (request, response) => {
-  request.body.password = bcrypt.hashSync(request.body.password, bcrypt.genSaltSync(10));
   User.findByIdAndUpdate(request.params.id, request.body,
     (error, foundUser) => {
       if (error) {

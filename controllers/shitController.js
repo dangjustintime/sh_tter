@@ -14,7 +14,7 @@ router.get("/index/:author", (request, response) => {
 
 // add like route
 router.put("/addLike/:id", (request, response) => {
-  Shit.findByIdAndUpdate(request.params.id, { $push: { likes: request.body.liker } }, (error, foundShit) => {
+ Shit.findByIdAndUpdate(request.params.id, { $push: { likes: request.body.liker } }, (error, foundShit) => {
     if (error) {
       console.log(error);
     }

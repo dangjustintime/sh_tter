@@ -7,6 +7,8 @@ class ShitList extends React.Component {
             <ShitItem
               shit={shit}
               handleDeleteShit={this.props.handleDeleteShit}
+              handleAddLike={this.props.handleAddLike}
+              handleAddReshit={this.props.handleAddReshit}
             />
           );
         })}

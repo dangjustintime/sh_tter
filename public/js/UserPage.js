@@ -82,6 +82,8 @@ class UserPage extends React.Component {
           <ShitList
             shits={this.props.shits}
             handleDeleteShit={this.props.handleDeleteShit}
+            handleAddLike={this.props.handleAddLike}
+            handleAddReshit={this.props.handleAddReshit}
           /> :
           <UsersPage
             users={this.props.users}

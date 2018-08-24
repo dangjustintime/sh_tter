@@ -19,6 +19,8 @@ class App extends React.Component {
     this.handleDeleteShit = this.handleDeleteShit.bind(this); 
     this.handleAddFollower = this.handleAddFollower.bind(this);
     this.handleAddFollowing = this.handleAddFollowing.bind(this);
+    this.handleAddLike = this.handleAddLike.bind(this);
+    this.handleAddReshit = this.handleAddReshit.bind(this);
     this.getShits = this.getShits.bind(this);
     this.getFollowingShits = this.getFollowingShits.bind(this);
     this.getUsers = this.getUsers.bind(this);
@@ -149,7 +151,6 @@ class App extends React.Component {
     getShits();
   }
   handleAddFollower(user) {
-    console.log("add follower");
     fetch("/users/addFollower/" + user._id, {
       method: "PUT",
       body: JSON.stringify({ follower: this.state.session.username}),
@@ -158,13 +159,10 @@ class App extends React.Component {
       }
     })
     .then(response => { return response.json() })
-    .then(JSONFollowerData => {
-      console.log("added my nuts");
-    })
+    .then(JSONFollowerData => {})
     .catch(error => console.log("error"));
   }
   handleAddFollowing(user) {
-    console.log("add following");
     fetch("/users/following/" + this.state.session.id, {
       method: "PUT",
       body: JSON.stringify({ following: user.username}),
@@ -173,10 +171,33 @@ class App extends React.Component {
       }
     })
     .then(response => { return response.json() })
-    .then(JSONFollowingData => {
-      console.log("added follower and following");
-    })
+    .then(JSONFollowingData => {})
     .catch(error => console.log(error));
+  }
+  handleAddLike(id) {
+    fetch("/shits/addLike/" + id, {
+      method: "PUT",
+      body: JSON.stringify({ liker: this.state.session.username}),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => { return response.json() })
+    .then(JSONData => {})
+    .catch(error => console.log(error))
+  }
+  handleAddReshit(id) {
+    console.log("reshit")
+    fetch("/shits/reshit/" + id, {
+      method: "PUT",
+      body: JSON.stringify({ reshiter: this.state.session.username}),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => { return response.json() })
+    .then(JSONData => {})
+    .catch(error => console.log(error))
   }
   getShits() {
     fetch('/shits/index/' + this.state.session.username)
@@ -223,10 +244,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <div>
           <h1>Sh*tter💩</h1>
-          <h1>{this.state.session.password}</h1>
-        </div>
         { this.state.session.username == "" ?
           <HomePage
             username={this.state.session.username} 
@@ -243,6 +261,8 @@ class App extends React.Component {
             handleEditSubmit={this.handleEditSubmit}
             handleAddFollower={this.handleAddFollower}
             handleAddFollowing={this.handleAddFollowing}
+            handleAddLike={this.handleAddLike}
+            handleAddReshit={this.handleAddReshit}
             getShits={this.getShits}
             shits={this.state.shits}
             users={this.state.users}

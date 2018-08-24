@@ -1,7 +1,7 @@
 class UsersPage extends React.Component {
   render() {
     return (
-      <div>
+      <div id="userCardsContainer">
         { this.props.users.map((user) => {
           return(
             <UserCard

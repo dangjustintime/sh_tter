@@ -41,56 +41,77 @@ class UserPage extends React.Component {
   render() {
     return (
       <div>
-        <h1>Welcome {(this.props.session.username)}!!</h1>
-        <button onClick={this.props.handleSignOut}>Sign Out</button>
-        { !this.state.showUsers ?
-          <button onClick={this.handleUsersToggle}>Explore</button> :
-          <button onClick={this.handleUsersToggle}>News Feed</button>
-        }
-        { !this.state.showEditForm ?
-          <button onClick={this.handleEditToggle}>Edit Profile</button> :
-          <div>
-            <button onClick={this.handleEditToggle}>Close</button>
-            <form onSubmit={this.handleFormSubmit}>
-              <input
-                type="text"
-                placeholder="bio"
-                value={this.state.bio}
-                onChange={this.handleBioChange}
-              />
-              <input
-                type="text"
-                placeholder="Profile Pic"
-                value={this.state.profilePic}
-                onChange={this.handleProfilePicChange}
-              />
-              <input type="submit" value="Save Changes" />
+        <div className="navbar brown">
+          { !this.state.showUsers ?
+            <h5 className="nav-item" onClick={this.handleUsersToggle}>Explore</h5> :
+            <h5 className="nav-item" onClick={this.handleUsersToggle}>News Feed</h5>
+          }
+          { !this.state.showEditForm ?
+            <h5 className="nav-item" onClick={this.handleEditToggle}>Edit Profile</h5> :
+            <h5 className="nav-item" onClick={this.handleEditToggle}>Close</h5>
+          }
+          <button className="nav-item bt btn-danger" onClick={this.props.handleSignOut}>Sign Out</button>
+        </div>
+        <div className="row">
+        <div className="col-4">
+          <UserInfo user={this.props.session} />
+          { !this.state.showEditForm ?
+            null :
+            <div className="card">
+              <form onSubmit={this.handleFormSubmit} className="card-body">
+                <div className="form-group">
+                  <label>Edit Profile</label>
+                  <input
+                    className="form-control"
+                    type="text"
+                    placeholder="bio"
+                    value={this.state.bio}
+                    onChange={this.handleBioChange}
+                  />
+                  <input
+                    className="form-control"
+                    type="text"
+                    placeholder="Profile Pic"
+                    value={this.state.profilePic}
+                    onChange={this.handleProfilePicChange}
+                  />
+                  <button type="submit" className="btn btn-primary">Save Changes</button>
+                </div>
+              </form>
+            </div>
+          }
+          <div className="card">
+            <form onSubmit={this.handleSubmit} className="card-body">
+              <div className="form-group">
+                <label>Post Shi*t</label>
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="sh*t here"
+                  value={this.state.text}
+                  onChange={this.handleTextChange}
+                />
+                <button type="submit" className="btn btn-secondary"><h1>💩</h1></button>
+              </div>
             </form>
-          </div> 
-        }
-        <form onSubmit={this.handleSubmit}>
-          Create Shi*t
-          <input
-            type="text"
-            placeholder="sh*t"
-            value={this.state.text}
-            onChange={this.handleTextChange}
-          />
-          <input type="submit" value="sh*t" />
-        </form>
-        { !this.state.showUsers ?
-          <ShitList
-            shits={this.props.shits}
-            handleDeleteShit={this.props.handleDeleteShit}
-            handleAddLike={this.props.handleAddLike}
-            handleAddReshit={this.props.handleAddReshit}
-          /> :
-          <UsersPage
-            users={this.props.users}
-            handleAddFollower={this.props.handleAddFollower}
-            handleAddFollowing={this.props.handleAddFollowing}
-          />
-        }
+          </div>
+        </div>
+        <div className="col-8">
+          { !this.state.showUsers ?
+            <ShitList
+              shits={this.props.shits}
+              handleDeleteShit={this.props.handleDeleteShit}
+              handleAddLike={this.props.handleAddLike}
+              handleAddReshit={this.props.handleAddReshit}
+            /> :
+            <UsersPage
+              users={this.props.users}
+              handleAddFollower={this.props.handleAddFollower}
+              handleAddFollowing={this.props.handleAddFollowing}
+            />
+          }
+          </div>
+        </div>
       </div>
     )
   }

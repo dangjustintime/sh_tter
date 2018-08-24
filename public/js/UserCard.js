@@ -9,17 +9,17 @@ class UserCard extends React.Component {
   }
   render() {
     return(
-      <div className="card">
-        <img
-          className="card-img-top"
-          src={this.props.user.profilePic}
-          alt="Profile Pic"
-        />
+      <div className="card col-3">
         <div className="card-body">
+          <img
+            hieght="100px"
+            width="100px"
+            src={this.props.user.profilePic}
+            alt="Profile Pic"
+          />
           <h5>{this.props.user.username}</h5>
           <p>{this.props.user.bio}</p>
-          <p>Following {this.props.user.following.length}</p>
-          <p>Followers {this.props.user.followers.length}</p>
+          <p>Following {this.props.user.following.length} Followers {this.props.user.followers.length}</p>
           <button onClick={this.handleClick}>Follow</button>
         </div>
       </div>

@@ -22,18 +22,25 @@ class SignUp extends React.Component {
     return (
        <form onSubmit={this.handleSubmit}>
          <input
+           className="form-control"
            type="text"
            placeholder="username"
            value={this.state.username}
            onChange={this.handleChangeUsername}
          />
          <input
+           className="form-control"
            type="password"
            placeholder="password"
            value={this.state.password}
            onChange={this.handleChangePassword}
          />
-         <input type="submit" value="Sign Up" />
+         <button
+          className="btn btn-primary"
+          type="submit"
+         >
+           Sign Up
+         </button>
        </form>
     )
   }

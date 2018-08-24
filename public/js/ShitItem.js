@@ -16,15 +16,16 @@ class ShitItem extends React.Component {
   }
   render() {
     return(
-      <div>
-        <h3>{this.props.shit.author}</h3>
-        <h4>{this.props.shit.timestamp}</h4>
-        <h2>{this.props.shit.text}</h2>
-        <p>
-          <span onClick={this.handleLike}>❤️{this.props.shit.likes.length}</span> 
-          <span onClick={this.handleReshit}>💩{this.props.shit.reshits.length}</span>
-        </p>
-        <button onClick={this.handleClick}>Trash</button>
+      <div className="card col-9">
+        <div className="card-body">
+          <h4>{this.props.shit.author}</h4>
+          <p className="card-subtitle">{this.props.shit.timestamp}</p>
+          <h2>{this.props.shit.text}</h2>
+          <h5>
+            <span onClick={this.handleLike}>❤️{this.props.shit.likes.length}</span>  
+            <span onClick={this.handleReshit}>💩{this.props.shit.reshits.length}</span>
+          </h5>
+        </div>
       </div>
     );
   }

@@ -5,7 +5,11 @@ class App extends React.Component {
       session: {
         username: "",
         password: "",
-        id: ""
+        id: "",
+        bio: "",
+        profilePic: "",
+        followersCount: 0,
+        followingCount: 0
       },
       users: [],
       shits: []
@@ -77,6 +81,7 @@ class App extends React.Component {
     })
     .then(JSONData => {
       console.log(JSONData);
+      alert("You have updated your profile");
     })
     .catch(error => console.log("error"));
     event.preventDefault();
@@ -139,6 +144,7 @@ class App extends React.Component {
     })
     .then(jsonedSession => {
       console.log(jsonedSession); 
+      alert("posting...");
     })
     .catch(error => console.log(error));
     event.preventDefault();
@@ -159,10 +165,12 @@ class App extends React.Component {
       }
     })
     .then(response => { return response.json() })
-    .then(JSONFollowerData => {})
+    .then(JSONFollowerData => {
+    })
     .catch(error => console.log("error"));
   }
   handleAddFollowing(user) {
+    alert("now following " + user.username);
     fetch("/users/following/" + this.state.session.id, {
       method: "PUT",
       body: JSON.stringify({ following: user.username}),
@@ -171,10 +179,12 @@ class App extends React.Component {
       }
     })
     .then(response => { return response.json() })
-    .then(JSONFollowingData => {})
+    .then(JSONFollowingData => {
+    })
     .catch(error => console.log(error));
   }
   handleAddLike(id) {
+    alert("liked!!");
     fetch("/shits/addLike/" + id, {
       method: "PUT",
       body: JSON.stringify({ liker: this.state.session.username}),
@@ -187,7 +197,7 @@ class App extends React.Component {
     .catch(error => console.log(error))
   }
   handleAddReshit(id) {
-    console.log("reshit")
+    alert("resh*tted!!");
     fetch("/shits/reshit/" + id, {
       method: "PUT",
       body: JSON.stringify({ reshiter: this.state.session.username}),
@@ -237,14 +247,17 @@ class App extends React.Component {
     .then(response => response.json())
     .then(jsonedUsers => {
       this.setState({ users: jsonedUsers });
-      console.log("users:", this.state.users);
+      console.log("jsonedUsers: ", jsonedUsers);
+      console.log("getUsers state: ",this.state);
     })
     .catch(error => console.log(error));
   }
   render() {
     return (
       <div>
-          <h1>Sh*tter💩</h1>
+          <header>
+            <h1 className="brown">Sh*tter😀</h1>
+          </header>
         { this.state.session.username == "" ?
           <HomePage
             username={this.state.session.username} 
@@ -268,8 +281,6 @@ class App extends React.Component {
             users={this.state.users}
           />
         }
-        <h1>{this.state.username}</h1>
-        <h1>{this.state.password}</h1>
       </div>
     )
   }

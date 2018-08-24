@@ -7,6 +7,7 @@ class App extends React.Component {
         password: "",
         id: ""
       },
+      users: [],
       shits: []
     };
     this.handleLogin = this.handleLogin.bind(this);
@@ -15,8 +16,14 @@ class App extends React.Component {
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleCreateShit = this.handleCreateShit.bind(this); 
     this.handleDeleteShit = this.handleDeleteShit.bind(this); 
+    this.handleAddFollower = this.handleAddFollower.bind(this);
+    this.handleAddFollowing = this.handleAddFollowing.bind(this);
     this.getShits = this.getShits.bind(this);
     this.getFollowingShits = this.getFollowingShits.bind(this);
+    this.getUsers = this.getUsers.bind(this);
+  }
+  componentDidMount() {
+    this.getUsers();
   }
   handleLogin(newSession) {
     this.setState({ session: {
@@ -112,11 +119,40 @@ class App extends React.Component {
     getShits();
   }
   handleDeleteShit(id) {
-    console.log("delete shit");
     fetch("/shits/" + id, {
       method: "DELETE"
     })
     getShits();
+  }
+  handleAddFollower(user) {
+    console.log("add follower");
+    fetch("/users/addFollower/" + user._id, {
+      method: "PUT",
+      body: JSON.stringify({ follower: this.state.session.username}),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => { return response.json() })
+    .then(JSONFollowerData => {
+      console.log("added my nuts");
+    })
+    .catch(error => console.log("error"));
+  }
+  handleAddFollowing(user) {
+    console.log("add following");
+    fetch("/users/following/" + this.state.session.id, {
+      method: "PUT",
+      body: JSON.stringify({ following: user.username}),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => { return response.json() })
+    .then(JSONFollowingData => {
+      console.log("added follower and following");
+    })
+    .catch(error => console.log(error));
   }
   getShits() {
     fetch('/shits/index/' + this.state.session.username)
@@ -129,26 +165,36 @@ class App extends React.Component {
     .catch(error => console.log(error));
   }
   getFollowingShits() {
-    console.log("getting following shits");
     const followingAccounts = [];
     const followingShits = [];
     fetch("/users/" + this.state.session.id)
     .then(response => {
-      console.log("user response: ", response);
       return response.json();
     })
     .then(jsonedData => {
       jsonedData.following.forEach((account) => {
-        console.log("account:", account); 
         fetch("/shits/index/" + account)
         .then(response => response.json())
         .then(jsonedShit => {
           jsonedShit.forEach((shit) => followingShits.push(shit));
-          console.log(followingShits);
-          this.setState({ shits: followingShits.concat(this.state.shits) });
+          const newShits = followingShits.concat(this.state.shits);
+          newShits.sort((shit1, shit2) => {
+            return Date.parse(shit2.timestamp) - Date.parse(shit1.timestamp);
+          })
+          this.setState({ shits: newShits });
         });
       });
     })
+  }
+  getUsers() {
+    console.log("get users");
+    fetch("/users")
+    .then(response => response.json())
+    .then(jsonedUsers => {
+      this.setState({ users: jsonedUsers });
+      console.log("users:", this.state.users);
+    })
+    .catch(error => console.log(error));
   }
   render() {
     return (
@@ -166,8 +212,12 @@ class App extends React.Component {
             handleSignOut={this.handleSignOut}
             handleCreateShit={this.handleCreateShit}
             handleDeleteShit={this.handleDeleteShit}
+            handleAddFollower={this.handleAddFollower}
+            handleAddFollowing={this.handleAddFollowing}
             getShits={this.getShits}
             shits={this.state.shits}
+            users={this.state.users}
+
           />
         }
         <h1>{this.state.username}</h1>

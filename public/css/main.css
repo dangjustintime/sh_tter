@@ -1,0 +1,57 @@
+/*
+* {
+  border: solid 1px gold;
+}
+*/
+
+.brown {
+  background-color: #7a5639;
+  color: white;
+}
+
+.tan {
+  background-color: #c68d5d;
+  color: white;
+}
+
+.dark-brown {
+  background-color: #60442d;
+  color: white;
+}
+
+h1 {
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+}
+
+#homeInfoContainer {
+  display: flex;
+  height: 900px;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 10% 0;
+  justify-content: center;
+}
+
+#homeLogin {
+  display: flex;
+  height: 900px;
+  flex-direction: column;
+  justify-content: center;
+  
+}
+
+#loginForm {
+  text-align: center;
+}
+
+.card {
+  margin: 2.5%;
+}
+
+#userCardsContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
